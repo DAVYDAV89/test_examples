@@ -15,7 +15,4 @@ Button {
         border.width: 2
         radius: 15
     }
-    onClicked: {
-
-    }
 }

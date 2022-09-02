@@ -1,6 +1,7 @@
 
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include <QQmlContext>
 
 #include <QDebug>
 #include <unistd.h>
@@ -9,22 +10,20 @@
 
 int main(int argc, char *argv[])
 {
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-#endif
+
     QGuiApplication app(argc, argv);
 
     QQmlApplicationEngine engine;
-    const QUrl url(QStringLiteral("qrc:/main.qml"));
-    QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
-                     &app, [url](QObject *obj, const QUrl &objUrl) {
-        if (!obj && url == objUrl)
-            QCoreApplication::exit(-1);
-    }, Qt::QueuedConnection);
-    engine.load(url);
+    ThreadBuffer appCore;
+    QQmlContext *context = engine.rootContext();
 
-    // Создаем экземпляр класса.
-    ThreadBuffer _threadBuffer;
+    context->setContextProperty("appCore", &appCore);
+
+    engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
+    if (engine.rootObjects().isEmpty())
+        return -1;
 
 //    for (int i = 0; i < 10; ++i ){
 //        sleep(1);

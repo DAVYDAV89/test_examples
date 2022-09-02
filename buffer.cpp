@@ -26,6 +26,8 @@ Buffer::~Buffer()
 
 void Buffer::Generate()
 {
+//    qDebug() << __PRETTY_FUNCTION__;
+
     for (int i = 0; i < _count; ++i) {
         Add((uint8_t)rand() % (max_value - min_value + 1) + min_value);
     }
