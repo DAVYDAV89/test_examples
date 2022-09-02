@@ -17,6 +17,9 @@ private:
     int         _count;         // Размер последовательности
     int         _occupiedSpace; // Занятое мето.
 
+    int min_value;
+    int max_value;
+
 private slots:
     // Метод вывдящий все данные
     void Get();

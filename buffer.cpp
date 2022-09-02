@@ -10,6 +10,9 @@ Buffer::Buffer(int size, int count)
     _data = new uint8_t[_size];
     _occupiedSpace = 0;
 
+    min_value = 1;
+    max_value = 3;
+
     srand(time(NULL));
 
     connect(this, SIGNAL(add()),  this,  SLOT(Get()));
@@ -24,7 +27,7 @@ Buffer::~Buffer()
 void Buffer::Generate()
 {
     for (int i = 0; i < _count; ++i) {
-        Add((uint8_t)rand() % 3);
+        Add((uint8_t)rand() % (max_value - min_value + 1) + min_value);
     }
     emit add();
 }

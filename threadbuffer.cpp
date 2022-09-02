@@ -6,10 +6,10 @@ ThreadBuffer::ThreadBuffer(QObject *parent)
     : QObject{parent}
 {
 
-    on_click_buffer();
-    on_click_consumer();
-    qRegisterMetaType<std::vector<uint8_t>>("std::vector<uint8_t>");
+//    on_click_buffer();
+//    on_click_consumer();
 
+    qRegisterMetaType<std::vector<uint8_t>>("std::vector<uint8_t>");
 }
 
 ThreadBuffer::~ThreadBuffer()
