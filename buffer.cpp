@@ -37,10 +37,13 @@ void Buffer::Generate()
 void Buffer::Add(uint8_t val)
 {
 //    qDebug() << "val: " << val;
+
     if (_occupiedSpace == _size)
         _occupiedSpace = 0;
 
     _data[_occupiedSpace++ % _size] = val;
+
+    emit set_occupiedSpace(_occupiedSpace);
 }
 
 

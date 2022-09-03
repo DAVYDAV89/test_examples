@@ -14,7 +14,11 @@ class ThreadBuffer : public QObject
     Q_OBJECT
     Q_PROPERTY(int _size_buffer READ _size_buffer WRITE setSizeBuffer)
     Q_PROPERTY(int _size_query READ _size_query WRITE setSizeQuery)
+    Q_PROPERTY(int _speed_data READ _speed_data WRITE setSpeedData)
     Q_PROPERTY(int _speed_query READ _speed_query WRITE setSpeedQuery)
+    Q_PROPERTY(int _max_value READ _max_value WRITE setMaxValue)
+    Q_PROPERTY(int _max_value READ _max_value WRITE setMaxValue)
+//    Q_PROPERTY(int m_occupiedSpace READ getOccupiedSpace NOTIFY occupiedSpaceChanged)
 public:
     explicit ThreadBuffer(QObject *parent = nullptr);
     ~ThreadBuffer();
@@ -27,8 +31,16 @@ public:
         return m_size_query;
     }
 
+    int _speed_data() {
+        return m_speed_data;
+    }
+
     int _speed_query() {
         return m_speed_query;
+    }
+
+    int _max_value() {
+        return m_max_value;
     }
 
 private:
@@ -40,9 +52,12 @@ private:
     QTimer  *m_timerConsumer;
     Consumer*m_Consumer;
 
-    int  m_size_buffer{0};
-    int  m_size_query{0};
-    int  m_speed_query{0};
+    int  m_size_buffer{100000};
+    int  m_size_query{10};
+    int  m_speed_data{10000};
+    int  m_speed_query{1};
+    int  m_max_value{10};
+    int  m_occupiedSpace{0};
 
 public slots:
     void on_click_buffer();
@@ -52,12 +67,20 @@ public slots:
 
     void setSizeBuffer(int _size);
     void setSizeQuery(int _size);
+    void setSpeedData(int _speed);
     void setSpeedQuery(int _speed);
+    void setMaxValue(int _max_value);
+
+//    int getOccupiedSpace( ) {
+//        return m_occupiedSpace;
+//    }
 
 private slots:
+    void setOccupiedSpace(int _occupiedSpace );
 
 signals:
-    void comparison_data(std::vector<uint8_t>);
+    void comparison_data(std::vector<uint8_t>);  
+    void occupiedSpaceChanged(int m_occupiedSpace);
 
 };
 

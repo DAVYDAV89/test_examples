@@ -1,42 +1,31 @@
-import QtQuick.Window 2.12
 import QtQuick 2.13
 import QtQuick.Controls 2.13
 import QtQuick.Layouts 1.2
 import QtQuick.Controls.Styles 1.4
-import QtCharts 2.0
 
 ApplicationWindow {
     id: app
     visible: true
-    width: 700
-    height:300
-    maximumHeight: height
-    maximumWidth: width
-    minimumHeight: height
-    minimumWidth: width
+    width: 780
+    height: 600
     title: qsTr("STC")
 
-//    property int _size_buffer: spinBox_size_buffer.value
-
+    property int _occupiedSpace: 0
 
     Connections{
         target: appCore
 
-//        onSetValueOperation:{
-//                        console.log("size_buffer:", _size_buffer);
-//            //            console.log("oper:", _operation);
-//            //            console.log("result:", _results);
-//            //            console.log("status:", _status);
-//            //            console.log("delay:", _delay);
-//        }
-//        onSetResultTerm:{
-
-//        }
+        onOccupiedSpaceChanged:{
+            _occupiedSpace = m_occupiedSpace
+//            console.log("_occupiedSpace:", _occupiedSpace );
+        }
     }
-
 
     RowLayout {
         id: rowLayout3
+
+        width: app.width
+        height: Math.min(app.width, app.height)
 
         anchors.fill: parent
         anchors.right: parent.right
@@ -67,14 +56,14 @@ ApplicationWindow {
             }
             SpinBox {
                 id: spinBox_size_buffer
-                from: 5
+                from: 4
                 to: 1000000000
                 stepSize: 100
                 editable: true
 
                 Layout.row: 0
                 Layout.column: 1
-                Layout.minimumWidth: 200
+                Layout.fillWidth: true
             }
 
             Label {
@@ -86,7 +75,7 @@ ApplicationWindow {
             }
             SpinBox {
                 id: spinBox_size_query
-                from: 3
+                from: 2
                 to: 1000
                 stepSize: 1
                 editable: true
@@ -135,8 +124,8 @@ ApplicationWindow {
                 Layout.column: 1
                 Layout.fillWidth:  true
 
-//                Layout.rowSpan: 1
-//                Layout.columnSpan: 2
+                //                Layout.rowSpan: 1
+                //                Layout.columnSpan: 2
             }
 
             Label {
@@ -145,7 +134,7 @@ ApplicationWindow {
                 Layout.row: 4
                 Layout.column: 0
                 font.pointSize: 15
-//                Layout.columnSpan: 2
+                //                Layout.columnSpan: 2
             }
             SpinBox {
                 id: spinBox_speed_query
@@ -158,7 +147,7 @@ ApplicationWindow {
                 Layout.column: 1
                 Layout.fillWidth:  true
 
-//                Layout.columnSpan: 2
+                //                Layout.columnSpan: 2
             }
 
             Button {
@@ -168,7 +157,7 @@ ApplicationWindow {
                 Layout.column: 3
                 Layout.rowSpan: 2
                 Layout.fillHeight:  true
-//                Layout.minimumWidth: 88
+                //                Layout.minimumWidth: 88
 
                 font.pointSize: 15
                 background: Rectangle {
@@ -204,7 +193,7 @@ ApplicationWindow {
                 Layout.column: 3
                 Layout.rowSpan: 2
                 Layout.fillHeight:  true
-//                Layout.minimumWidth: 88
+                //                Layout.minimumWidth: 88
 
                 font.pointSize: 15
                 background: Rectangle {
@@ -214,6 +203,18 @@ ApplicationWindow {
                     radius: 15
                 }
                 onClicked: {
+
+                    if (chart.visible === true) {
+                        chart.visible = false
+                        app.width -= chart.width
+                    }
+                    else {
+                        chart.visible = true
+                        app.width += chart.width
+                    }
+
+                    this.text === "Показать график" ? this.text = "Спрятать график" : this.text = "Показать график"
+
                 }
             }
 
@@ -225,8 +226,8 @@ ApplicationWindow {
                 Layout.row: 4
                 Layout.column: 3
                 Layout.rowSpan: 2
-//                Layout.fillHeight:  true
-//                Layout.minimumWidth: 88
+                //                Layout.fillHeight:  true
+                //                Layout.minimumWidth: 88
 
                 font.pointSize: 15
                 background: Rectangle {
@@ -241,30 +242,42 @@ ApplicationWindow {
                 }
             }
 
+            Rectangle {
+                id: term
+                width: 300
+                height: 300
+
+                Layout.row: 6
+                Layout.column: 0
+                Layout.columnSpan: 4
 
 
-//            GridLayout {
-//                id: gridTerm
-//                width: 340
-//                Layout.minimumWidth: 340
+                border.color: "gray"
+                color: "#cccccc"
+                radius: 15
+                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+                Layout.fillWidth: true
+                Layout.fillHeight:  true
 
-//                Rectangle {
-//                    id: term
-//                    width: 360
-//                    height: 360
+                ListModel {
+                    id: dataModel
+                }
+                Term{
+                    id: termDisplay
+                }
+            }
+            Chart{
+                id: chart
+                visible: false
+                width: 300
+                height: 300
+                Layout.row: 0
+                Layout.column: 4
+                Layout.rowSpan: 7
 
-//                    border.color: "gray"
-//                    color: "#cccccc"
-//                    radius: 15
-//                    Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-//                    Layout.fillWidth: true
-//                    Layout.fillHeight:  true
-
-//                    Chart{
-//                        id: chart
-//                    }
-//                }
-//            }
+                Layout.fillWidth: true
+                Layout.fillHeight:  true
+            }
         }
     }
 }
