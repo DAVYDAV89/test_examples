@@ -7,7 +7,7 @@ class Consumer : public QObject
 {
     Q_OBJECT
 public:
-    Consumer(int count = 1024);
+    Consumer(int count = 1024, int max_value = 10);
     ~Consumer();
 
 public slots:
@@ -21,6 +21,8 @@ public slots:
 
 private:
     int _count;
+    int _max_value;
+    int _min_value{0};
     std::vector<uint8_t> _data;
 
 private slots:

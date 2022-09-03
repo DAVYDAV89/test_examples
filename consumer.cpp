@@ -3,11 +3,14 @@
 #include <QDebug>
 #include <algorithm>
 #include <numeric>
+#include <thread>
+#include <iostream>
 
 using namespace std;
 
-Consumer::Consumer(int count)
+Consumer::Consumer(int count, int max_value)
     : _count(count)
+    , _max_value(max_value)
 {
     srand(time(NULL));
 }
@@ -21,7 +24,7 @@ void Consumer::Generate()
 {
     _data.clear();
     for (int i = 0; i < _count; ++i) {
-        Add((uint8_t)rand() % 3);
+        Add((uint8_t)rand() % (_max_value - _min_value + 1) + _min_value);
     }
 }
 
@@ -35,8 +38,10 @@ void Consumer::comparison(const vector<uint8_t> &_buffer)
     if (_data.size() == 0 || _buffer.size() == 0)
         return;
 
+    qDebug() << "--------comparison-------------";
+
     for (const auto &el : _data) {
-        qDebug() << "el_data: " << el;
+        qDebug() << "el_querty " << el;
     }
 
     for (const auto &el : _buffer) {
@@ -48,16 +53,10 @@ void Consumer::comparison(const vector<uint8_t> &_buffer)
     };
     if ( _index != std::end(_buffer) ) {
         auto it = find( _buffer.begin(), _buffer.end(), *_index);
+
+
         qDebug() << "---------sequence found----------" << it - _buffer.begin();
+        cout << "threadID : " << std::this_thread::get_id() << endl;
         emit equals();
-    } else {
-//        qDebug() << "---------sequence NOT found----------";
     }
-
-
-
-//    if (_data == _buffer ) {
-//        qDebug() << "---------equals----------";
-//        emit equals();
-//    }
 }
