@@ -26,6 +26,7 @@ void Consumer::Generate()
     for (int i = 0; i < _count; ++i) {
         Add((uint8_t)rand() % (_max_value - _min_value + 1) + _min_value);
     }
+    emit add();
 }
 
 void Consumer::Add(uint8_t el)
@@ -38,7 +39,7 @@ void Consumer::comparison(const vector<uint8_t> &_buffer)
     if (_data.size() == 0 || _buffer.size() == 0)
         return;
 
-//    qDebug() << "--------comparison-------------";
+//    qDebug() << "--------comparison--thread------" << _id_thread;
 
 //    for (const auto &el : _data) {
 //        qDebug() << "el_querty " << el;
@@ -58,6 +59,8 @@ void Consumer::comparison(const vector<uint8_t> &_buffer)
         for (const auto &el : _data) {
             _sequence += QString::number(el);
         }
+        _data.clear();
+
         QString _dateTime = QDateTime::currentDateTime().toString("dd.MM.yyyy/hh:mm:ss");
 
         int _begin_sequence = it - _buffer.begin();

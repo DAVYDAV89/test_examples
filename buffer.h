@@ -32,7 +32,7 @@ public slots:
 
 
 signals:
-    void finish();
+    void finished();
     void add();
     void get(std::vector<uint8_t>);
     void set_occupiedSpace(int);

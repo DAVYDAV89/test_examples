@@ -30,6 +30,8 @@ private slots:
 
 signals:
     void equals(int, QString, int, QString);
+    void add();
+    void finished();
 
 };
 

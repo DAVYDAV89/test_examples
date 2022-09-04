@@ -13,7 +13,7 @@ import QtQuick.Layouts 1.2
         TableViewColumn {
             id: _id
             width: 100
-            title: "id Потока"
+            title: "№ Потока"
             role: "id"
         }
         TableViewColumn {
@@ -22,14 +22,14 @@ import QtQuick.Layouts 1.2
             role: "sequence"
         }
         TableViewColumn {
-            width: 100
-            title: "Индекс"
+            width: 150
+            title: "Начало вхождения"
             role: "begin_sequence"
         }
 
         TableViewColumn {
             width: 150
-            title: "Время"
+            title: "Время обнаружения"
             role: "dataTime"
         }
     }

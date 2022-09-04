@@ -15,7 +15,6 @@ Buffer::Buffer(int size, int count, uint8_t max_value)
     _occupiedSpace = _size;
 
     srand(time(NULL));
-    connect(this, SIGNAL(add()),  this,  SLOT(Get()));
 }
 
 Buffer::~Buffer()
@@ -30,8 +29,7 @@ void Buffer::Generate()
 
     for (int i = 0; i < _count; ++i) {
         Add((uint8_t)rand() % (_max_value - _min_value + 1) + _min_value);
-    }
-    emit add();
+    }    
 }
 
 void Buffer::Add(uint8_t val)
@@ -52,7 +50,6 @@ void Buffer::Get()
     vector<uint8_t> res;
 
     for (int i = 0; i < _size; ++i) {
-//        qDebug() << "el: " << _data[i];
         res.push_back(_data[i]);
     }
 

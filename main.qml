@@ -71,7 +71,8 @@ ApplicationWindow {
             }
             SpinBox {
                 id: spinBox_size_buffer
-                from: 100000
+//                from: 100000
+                from: 10
                 to: 1000000000
                 stepSize: 100
                 editable: true
@@ -90,7 +91,8 @@ ApplicationWindow {
             }
             SpinBox {
                 id: spinBox_size_query
-                from: 10
+//                from: 10
+                from: 3
                 to: 1000
                 stepSize: 1
                 editable: true
@@ -109,7 +111,8 @@ ApplicationWindow {
             }
             SpinBox {
                 id: spinBox_max_data
-                from: 10
+//                from: 10
+                from: 2
                 to: 100
                 stepSize: 1
                 editable: true
@@ -121,14 +124,14 @@ ApplicationWindow {
 
             Label {
                 id: label_speed_data
-                text: qsTr("Скорость генерации данных: ")
+                text: qsTr("Скорость генерации данных, сек: ")
                 Layout.row: 3
                 Layout.column: 0
                 font.pointSize: 15
             }
             SpinBox {
                 id: spinBox_speed_data
-                from: 1000
+                from: 10000
                 to: 100000000
                 stepSize: 1
                 editable: true
@@ -140,7 +143,7 @@ ApplicationWindow {
 
             Label {
                 id: label_speed_query
-                text: qsTr("Скорость генерации запросов: ")
+                text: qsTr("Скорость генерации запросов, мин: ")
                 Layout.row: 4
                 Layout.column: 0
                 font.pointSize: 15
@@ -197,6 +200,11 @@ ApplicationWindow {
                         spinBox_size_query.enabled = true
                         spinBox_max_data.enabled = true
                         spinBox_speed_data.enabled = true
+                        dataModel.clear()
+                        _row = 0
+                        _occupiedSpace = 0
+                        _begin_sequence =
+                        _size_sequence = 0
 
                         appCore.on_click_buffer_stop()
                     }

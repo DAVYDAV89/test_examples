@@ -1,8 +1,4 @@
-import QtQuick 2.13
-import QtQuick.Controls 2.13
-
 import QtCharts 2.0
-
 
 ChartView {
 //    theme: ChartView.ChartThemeBrownSand
@@ -35,9 +31,7 @@ ChartView {
 
         PieSlice { label: "До последовательности"; value: _begin_sequence; color: "#DF8939"; borderColor: "#13060C" }
         PieSlice { label: "Последовательность"; value: _begin_sequence + _size_sequence; color: "#163430"; borderColor: "#13060C" }
-        PieSlice { label: "После последовательности"; value: spinBox_size_buffer.value - _begin_sequence + _size_sequence; color: "#DF8939"; borderColor: "#13060C" }
+        PieSlice { label: "После последовательности"; value: spinBox_size_buffer.value - (_begin_sequence + _size_sequence); color: "#DF8939"; borderColor: "#13060C" }
     }
 }
-
-
 
