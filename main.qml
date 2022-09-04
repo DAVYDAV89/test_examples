@@ -3,6 +3,8 @@ import QtQuick.Controls 2.13
 import QtQuick.Layouts 1.2
 import QtQuick.Controls.Styles 1.4
 
+
+
 ApplicationWindow {
     id: app
     visible: true
@@ -11,6 +13,9 @@ ApplicationWindow {
     title: qsTr("STC")
 
     property int _occupiedSpace: 0
+    property int _row: 0
+    property int _begin_sequence: 0
+    property int _size_sequence: 0
 
     Connections{
         target: appCore
@@ -18,6 +23,16 @@ ApplicationWindow {
         onOccupiedSpaceChanged:{
             _occupiedSpace = m_occupiedSpace
 //            console.log("_occupiedSpace:", _occupiedSpace );
+        }
+        onShowEquals:{
+            _begin_sequence = m_begin_sequence
+            _size_sequence = spinBox_size_query.value
+            dataModel.insert(_row++, {id: m_id_thread, sequence: m_sequence, begin_sequence: m_begin_sequence, dataTime: m_dateTime})
+
+//            console.log("thread:", _id_thread );
+//            console.log("_sequence:", _sequence );
+//            console.log("_begin_sequence:", _begin_sequence );
+//            console.log("_dateTime:", _dateTime );
         }
     }
 
@@ -56,7 +71,7 @@ ApplicationWindow {
             }
             SpinBox {
                 id: spinBox_size_buffer
-                from: 4
+                from: 100000
                 to: 1000000000
                 stepSize: 100
                 editable: true
@@ -75,7 +90,7 @@ ApplicationWindow {
             }
             SpinBox {
                 id: spinBox_size_query
-                from: 2
+                from: 10
                 to: 1000
                 stepSize: 1
                 editable: true
@@ -84,7 +99,6 @@ ApplicationWindow {
                 Layout.column: 1
                 Layout.fillWidth:  true
             }
-
 
             Label {
                 id: label_max_data
@@ -95,7 +109,7 @@ ApplicationWindow {
             }
             SpinBox {
                 id: spinBox_max_data
-                from: 5
+                from: 10
                 to: 100
                 stepSize: 1
                 editable: true
@@ -103,7 +117,6 @@ ApplicationWindow {
                 Layout.row: 2
                 Layout.column: 1
                 Layout.fillWidth:  true
-
             }
 
             Label {
@@ -115,7 +128,7 @@ ApplicationWindow {
             }
             SpinBox {
                 id: spinBox_speed_data
-                from: 100
+                from: 1000
                 to: 100000000
                 stepSize: 1
                 editable: true
@@ -123,9 +136,6 @@ ApplicationWindow {
                 Layout.row: 3
                 Layout.column: 1
                 Layout.fillWidth:  true
-
-                //                Layout.rowSpan: 1
-                //                Layout.columnSpan: 2
             }
 
             Label {
@@ -134,20 +144,17 @@ ApplicationWindow {
                 Layout.row: 4
                 Layout.column: 0
                 font.pointSize: 15
-                //                Layout.columnSpan: 2
             }
             SpinBox {
                 id: spinBox_speed_query
-                from: 1000
-                to: 100000
+                from: 1
+                to: 100
                 stepSize: 1
                 editable: true
 
                 Layout.row: 4
                 Layout.column: 1
                 Layout.fillWidth:  true
-
-                //                Layout.columnSpan: 2
             }
 
             Button {
@@ -157,7 +164,6 @@ ApplicationWindow {
                 Layout.column: 3
                 Layout.rowSpan: 2
                 Layout.fillHeight:  true
-                //                Layout.minimumWidth: 88
 
                 font.pointSize: 15
                 background: Rectangle {
@@ -170,6 +176,11 @@ ApplicationWindow {
                     if (this.text === "Запустить") {
                         this.text = "Остановить"
 
+                        spinBox_size_buffer.enabled = false
+                        spinBox_size_query.enabled = false
+                        spinBox_max_data.enabled = false
+                        spinBox_speed_data.enabled = false
+
                         appCore._size_buffer     = spinBox_size_buffer.value
                         appCore._size_query      = spinBox_size_query.value
                         appCore._max_value       = spinBox_max_data.value
@@ -181,6 +192,12 @@ ApplicationWindow {
                     else {
                         this.text = "Запустить"
                         add_query.enabled = false
+
+                        spinBox_size_buffer.enabled = true
+                        spinBox_size_query.enabled = true
+                        spinBox_max_data.enabled = true
+                        spinBox_speed_data.enabled = true
+
                         appCore.on_click_buffer_stop()
                     }
                 }
@@ -193,7 +210,6 @@ ApplicationWindow {
                 Layout.column: 3
                 Layout.rowSpan: 2
                 Layout.fillHeight:  true
-                //                Layout.minimumWidth: 88
 
                 font.pointSize: 15
                 background: Rectangle {
@@ -226,8 +242,6 @@ ApplicationWindow {
                 Layout.row: 4
                 Layout.column: 3
                 Layout.rowSpan: 2
-                //                Layout.fillHeight:  true
-                //                Layout.minimumWidth: 88
 
                 font.pointSize: 15
                 background: Rectangle {
@@ -251,7 +265,6 @@ ApplicationWindow {
                 Layout.column: 0
                 Layout.columnSpan: 4
 
-
                 border.color: "gray"
                 color: "#cccccc"
                 radius: 15
@@ -264,6 +277,8 @@ ApplicationWindow {
                 }
                 Term{
                     id: termDisplay
+//                    onClicked: {
+//                    }
                 }
             }
             Chart{

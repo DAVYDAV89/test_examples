@@ -11,19 +11,26 @@ import QtQuick.Layouts 1.2
         clip: true
 
         TableViewColumn {
-            width: 150
+            id: _id
+            width: 100
             title: "id Потока"
-            role: "row"
+            role: "id"
         }
         TableViewColumn {
-            width: 480
+            width: 350
             title: "Последовательность"
-            role: "query"
+            role: "sequence"
         }
         TableViewColumn {
-            width: 120
-            title: "Status"
-            role: "status"
+            width: 100
+            title: "Индекс"
+            role: "begin_sequence"
+        }
+
+        TableViewColumn {
+            width: 150
+            title: "Время"
+            role: "dataTime"
         }
     }
 

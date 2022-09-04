@@ -7,7 +7,7 @@ class Consumer : public QObject
 {
     Q_OBJECT
 public:
-    Consumer(int count = 1024, int max_value = 10);
+    Consumer(int count = 1024, int max_value = 10, int id_thread = 0);
     ~Consumer();
 
 public slots:
@@ -23,12 +23,13 @@ private:
     int _count;
     int _max_value;
     int _min_value{0};
+    int _id_thread{0};
     std::vector<uint8_t> _data;
 
 private slots:
 
 signals:
-    void equals();
+    void equals(int, QString, int, QString);
 
 };
 

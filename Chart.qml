@@ -5,14 +5,14 @@ import QtCharts 2.0
 
 
 ChartView {
-    theme: ChartView.ChartThemeBrownSand
+//    theme: ChartView.ChartThemeBrownSand
+    legend.visible: false
     antialiasing: true
 
     PieSeries {
-        size: 1
-        holeSize: 0.7
-
-        id: pieSeries
+        size: 0.96
+        holeSize: 0.8
+        id: buffer
         PieSlice {
             id: full
             label: "Заполнено";
@@ -27,6 +27,15 @@ ChartView {
             color: "#DF8939";
             borderColor: "#13060C"
         }
+    }
+    PieSeries {
+        size: 0.9
+        holeSize: 0.8
+        id: query
+
+        PieSlice { label: "До последовательности"; value: _begin_sequence; color: "#DF8939"; borderColor: "#13060C" }
+        PieSlice { label: "Последовательность"; value: _begin_sequence + _size_sequence; color: "#163430"; borderColor: "#13060C" }
+        PieSlice { label: "После последовательности"; value: spinBox_size_buffer.value - _begin_sequence + _size_sequence; color: "#DF8939"; borderColor: "#13060C" }
     }
 }
 

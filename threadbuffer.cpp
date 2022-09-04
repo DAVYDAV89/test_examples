@@ -38,7 +38,7 @@ void ThreadBuffer::on_click_buffer()
     connect(m_timerBuffer,  SIGNAL(timeout()),  m_buffer,       SLOT(Generate()));
     connect(m_buffer,       SIGNAL(set_occupiedSpace(int)), this, SLOT(setOccupiedSpace(int)));
 
-    m_timerBuffer->setInterval(m_speed_data);
+    m_timerBuffer->setInterval(m_speed_data * 1000);
     m_timerBuffer->moveToThread(m_threadBuffer);
     m_buffer -> moveToThread(m_threadBuffer);
     m_threadBuffer -> start();
@@ -46,10 +46,9 @@ void ThreadBuffer::on_click_buffer()
 
 void ThreadBuffer::on_click_consumer()
 {
-    m_threadConsumer= new QThread;
-    m_timerConsumer= new QTimer;
-    m_Consumer = new Consumer(m_size_query, m_max_value);
-
+    m_threadConsumer = new QThread;
+    m_timerConsumer = new QTimer;
+    m_Consumer = new Consumer(m_size_query, m_max_value, ++m_thread_id);
 
     connect(m_threadConsumer, SIGNAL(started()),  m_timerConsumer,  SLOT(start()));
     connect(m_threadConsumer, SIGNAL(finished()), m_timerConsumer,  SLOT(deleteLater()));
@@ -57,9 +56,10 @@ void ThreadBuffer::on_click_consumer()
 
     connect(m_buffer, SIGNAL(get(std::vector<uint8_t>)), m_Consumer, SLOT(comparison(std::vector<uint8_t>)));
 
-    //    connect(m_Consumer,  SIGNAL(equals()),  this,       SLOT(show_equals()));
+    connect(m_Consumer,  SIGNAL(equals(int, QString, int, QString)),
+            this, SLOT(show_equals(int, QString, int, QString)));
 
-    m_timerConsumer->setInterval(m_speed_query);
+    m_timerConsumer->setInterval(m_speed_query * 60000);
     m_timerConsumer->moveToThread(m_threadConsumer);
     m_Consumer-> moveToThread(m_threadConsumer);
     m_threadConsumer-> start();
@@ -74,6 +74,8 @@ void ThreadBuffer::on_click_buffer_stop()
     if (m_timerBuffer->isActive()) {
         m_timerBuffer->stop();
     }
+
+    m_thread_id = 0;
 }
 
 void ThreadBuffer::setSizeBuffer(int _size)
@@ -126,11 +128,14 @@ void ThreadBuffer::setOccupiedSpace(int _occupiedSpace)
     emit occupiedSpaceChanged(m_occupiedSpace);
 }
 
-//void ThreadBuffer::get_data(std::vector<uint8_t> _buffer)
-//{
-////    qDebug() << __PRETTY_FUNCTION__;
+void ThreadBuffer::show_equals(int _id_thread, QString _sequence, int _begin_sequence, QString _dateTime)
+{
+    qDebug() << __PRETTY_FUNCTION__ ;
 
-//    for (const auto &el : _buffer) {
-//        qDebug() << "el: " << el;
-//    }
-//}
+//    qDebug() << "thread: " << _id_thread;
+//    qDebug() << "_sequence: " << _sequence;
+//    qDebug() << "_index: " << _begin_sequence;
+//    qDebug() << "_dateTime: " << _dateTime;
+    emit showEquals(_id_thread, _sequence, _begin_sequence,_dateTime);
+}
+

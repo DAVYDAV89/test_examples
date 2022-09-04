@@ -18,7 +18,6 @@ class ThreadBuffer : public QObject
     Q_PROPERTY(int _speed_query READ _speed_query WRITE setSpeedQuery)
     Q_PROPERTY(int _max_value READ _max_value WRITE setMaxValue)
     Q_PROPERTY(int _max_value READ _max_value WRITE setMaxValue)
-//    Q_PROPERTY(int m_occupiedSpace READ getOccupiedSpace NOTIFY occupiedSpaceChanged)
 public:
     explicit ThreadBuffer(QObject *parent = nullptr);
     ~ThreadBuffer();
@@ -58,6 +57,7 @@ private:
     int  m_speed_query{1};
     int  m_max_value{10};
     int  m_occupiedSpace{0};
+    int  m_thread_id{0};
 
 public slots:
     void on_click_buffer();
@@ -77,10 +77,12 @@ public slots:
 
 private slots:
     void setOccupiedSpace(int _occupiedSpace );
+    void show_equals(int _id_thread, QString _sequence, int _begin_sequence, QString _dateTime);
 
 signals:
     void comparison_data(std::vector<uint8_t>);  
     void occupiedSpaceChanged(int m_occupiedSpace);
+    void showEquals(int m_id_thread, QString m_sequence, int m_begin_sequence, QString m_dateTime);
 
 };
 
