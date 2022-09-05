@@ -19,6 +19,7 @@ private:
     int         _max_value;     // Макс генерируемое значение
     const int _min_value{0};
 
+
 private slots:
     // Метод вывдящий все данные
     void Get();

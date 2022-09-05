@@ -1,4 +1,4 @@
-import QtQuick 2.13
+﻿import QtQuick 2.13
 import QtQuick.Controls 2.13
 import QtQuick.Layouts 1.2
 import QtQuick.Controls.Styles 1.4
@@ -14,8 +14,9 @@ ApplicationWindow {
 
     property int _occupiedSpace: 0
     property int _row: 0
-    property int _begin_sequence: 0
+    property int _begin_index_sequence: 0
     property int _size_sequence: 0
+
 
     Connections{
         target: appCore
@@ -25,9 +26,9 @@ ApplicationWindow {
 //            console.log("_occupiedSpace:", _occupiedSpace );
         }
         onShowEquals:{
-            _begin_sequence = m_begin_sequence
+            _begin_index_sequence = _begin_sequence
             _size_sequence = spinBox_size_query.value
-            dataModel.insert(_row++, {id: m_id_thread, sequence: m_sequence, begin_sequence: m_begin_sequence, dataTime: m_dateTime})
+            dataModel.insert(_row++, {id: _id_thread, sequence: _sequence, begin_sequence: _begin_sequence, dataTime: _dateTime})
 
 //            console.log("thread:", _id_thread );
 //            console.log("_sequence:", _sequence );
@@ -71,8 +72,7 @@ ApplicationWindow {
             }
             SpinBox {
                 id: spinBox_size_buffer
-//                from: 100000
-                from: 50
+                from: 100000
                 to: 1000000000
                 stepSize: 100
                 editable: true
@@ -83,21 +83,39 @@ ApplicationWindow {
             }
 
             Label {
-                id: label_size_query
-                text: qsTr("Размер Запроса: ")
+                id: label_size_data
+                text: qsTr("Кол-во данных заполнения буфера в сек: ")
                 Layout.row: 1
                 Layout.column: 0
                 font.pointSize: 15
             }
             SpinBox {
-                id: spinBox_size_query
-//                from: 10
-                from: 3
-                to: 1000
+                id: spinBox_size_data
+                from: 10000
+                to: 100000000
                 stepSize: 1
                 editable: true
 
                 Layout.row: 1
+                Layout.column: 1
+                Layout.fillWidth:  true
+            }
+
+            Label {
+                id: label_size_query
+                text: qsTr("Размер Запроса: ")
+                Layout.row: 2
+                Layout.column: 0
+                font.pointSize: 15
+            }
+            SpinBox {
+                id: spinBox_size_query
+                from: 10
+                to: 1000
+                stepSize: 1
+                editable: true
+
+                Layout.row: 2
                 Layout.column: 1
                 Layout.fillWidth:  true
             }
@@ -105,34 +123,14 @@ ApplicationWindow {
             Label {
                 id: label_max_data
                 text: qsTr("Макс. зн. данных: ")
-                Layout.row: 2
-                Layout.column: 0
-                font.pointSize: 15
-            }
-            SpinBox {
-                id: spinBox_max_data
-//                from: 10
-                from: 2
-                to: 100
-                stepSize: 1
-                editable: true
-
-                Layout.row: 2
-                Layout.column: 1
-                Layout.fillWidth:  true
-            }
-
-            Label {
-                id: label_speed_data
-                text: qsTr("Скорость генерации данных, сек: ")
                 Layout.row: 3
                 Layout.column: 0
                 font.pointSize: 15
             }
             SpinBox {
-                id: spinBox_speed_data
-                from: 10000
-                to: 100000000
+                id: spinBox_max_data
+                from: 10
+                to: 100
                 stepSize: 1
                 editable: true
 
@@ -170,7 +168,7 @@ ApplicationWindow {
             }
             SpinBox {
                 id: spinBox_count_consumer
-                from: 5
+                from: 1
                 to: 100
                 stepSize: 1
                 editable: true
@@ -200,14 +198,14 @@ ApplicationWindow {
                         this.text = "Остановить"
 
                         spinBox_size_buffer.enabled = false
+                        spinBox_size_data.enabled = false
                         spinBox_size_query.enabled = false
                         spinBox_max_data.enabled = false
-                        spinBox_speed_data.enabled = false
 
                         appCore._size_buffer     = spinBox_size_buffer.value
+                        appCore._speed_data      = spinBox_size_data.value
                         appCore._size_query      = spinBox_size_query.value
                         appCore._max_value       = spinBox_max_data.value
-                        appCore._speed_data      = spinBox_speed_data.value
                         dataModel.clear()
 
                         appCore.on_click_buffer()
@@ -218,12 +216,17 @@ ApplicationWindow {
                         add_query.enabled = false
 
                         spinBox_size_buffer.enabled = true
+                        spinBox_size_data.enabled = true
                         spinBox_size_query.enabled = true
                         spinBox_max_data.enabled = true
-                        spinBox_speed_data.enabled = true
+
+                        spinBox_count_consumer.enabled = true
+                        spinBox_count_consumer.value = 1
+                        spinBox_count_consumer.to = 100
+
                         _row = 0
                         _occupiedSpace = 0
-                        _begin_sequence =
+                        _begin_index_sequence = 0
                         _size_sequence = 0
 
                         appCore.on_click_buffer_stop()
@@ -283,6 +286,16 @@ ApplicationWindow {
                     appCore._speed_query = spinBox_speed_query.value
                     appCore._count_consumer  = spinBox_count_consumer.value
                     appCore.on_click_consumer()
+
+//                    console.log("_count_thread:", appCore._count_thread);
+
+                    if (appCore._count_thread === 100 ) {
+                        this.enabled = false
+                        spinBox_count_consumer.enabled = false
+                        spinBox_count_consumer.value = 0
+                    }
+                    else
+                        spinBox_count_consumer.to = 100 - spinBox_count_consumer.value
                 }
             }
 

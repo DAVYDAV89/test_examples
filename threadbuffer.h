@@ -13,11 +13,12 @@ class ThreadBuffer : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(int _size_buffer /*READ _size_buffer*/ WRITE setSizeBuffer)
+    Q_PROPERTY(int _size_data /*READ _speed_data */WRITE setSizeData)
     Q_PROPERTY(int _size_query /*READ _size_query*/ WRITE setSizeQuery)
-    Q_PROPERTY(int _speed_data /*READ _speed_data */WRITE setSpeedData)
     Q_PROPERTY(int _speed_query /*READ _speed_query*/ WRITE setSpeedQuery)
     Q_PROPERTY(int _max_value /*READ _max_value */WRITE setMaxValue)
-    Q_PROPERTY(int _count_consumer /*READ _max_value */WRITE setCountConsumer)
+    Q_PROPERTY(int _count_consumer READ get_count_consumer WRITE setCountConsumer)
+    Q_PROPERTY(int _count_thread READ get_count_thread )
 public:
     explicit ThreadBuffer(QObject *parent = nullptr);
     ~ThreadBuffer();
@@ -41,6 +42,13 @@ public:
 //    int _max_value() {
 //        return m_max_value;
 //    }
+    int get_count_consumer() {
+        return m_count_consumer;
+    }
+
+    int get_count_thread() {
+        return m_thread_id;
+    }
 
 private:
     QThread *m_threadBuffer;
@@ -53,7 +61,7 @@ private:
 
     int  m_size_buffer{100000};
     int  m_size_query{10};
-    int  m_speed_data{10000};
+    int  m_size_data{10000};
     int  m_speed_query{1};
     int  m_max_value{10};
     int  m_occupiedSpace{0};
@@ -69,8 +77,8 @@ public slots:
     void on_click_buffer_stop();
 
     void setSizeBuffer(int _size);
+    void setSizeData(int _size);
     void setSizeQuery(int _size);
-    void setSpeedData(int _speed);
     void setSpeedQuery(int _speed);
     void setMaxValue(int _max_value);
     void setCountConsumer(int _count_consumer);
@@ -82,8 +90,8 @@ private slots:
 signals:
     void comparison_data(std::vector<uint8_t>);  
     void occupiedSpaceChanged(int m_occupiedSpace);
-    void showEquals(int m_id_thread, QString m_sequence, int m_begin_sequence, QString m_dateTime);
     void finished();
+    void showEquals(int _id_thread, QString _sequence, int _begin_sequence, QString _dateTime);
 };
 
 #endif // THREADBUFFER_H

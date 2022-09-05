@@ -12,12 +12,14 @@ Consumer::Consumer(int count, int max_value, int id_thread)
     , _max_value(max_value)
     , _id_thread(id_thread)
 {
+//    qDebug() << __PRETTY_FUNCTION__ << _id_thread;
+
     srand(time(NULL));
 }
 
 Consumer::~Consumer()
 {
-    qDebug() << __PRETTY_FUNCTION__;
+    qDebug() << __PRETTY_FUNCTION__ << _id_thread;
 }
 
 void Consumer::Generate()
@@ -60,6 +62,8 @@ void Consumer::comparison(const vector<uint8_t> &_buffer)
             _sequence += QString::number(el);
         }
         _data.clear();
+
+        qDebug() << "_sequence: " << _sequence << "thread: " << _id_thread;
 
         QString _dateTime = QDateTime::currentDateTime().toString("dd.MM.yyyy/hh:mm:ss");
 

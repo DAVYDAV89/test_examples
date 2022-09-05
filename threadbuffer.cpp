@@ -17,7 +17,7 @@ void ThreadBuffer::on_click_buffer()
 {
     m_threadBuffer = new QThread;
     m_timerBuffer = new QTimer;
-    m_buffer = new Buffer(m_size_buffer, m_size_query, m_max_value);
+    m_buffer = new Buffer(m_size_buffer, m_size_data, m_max_value);
 
     connect(this, SIGNAL(finished()),  m_buffer,  SIGNAL(finished()));
 
@@ -31,7 +31,7 @@ void ThreadBuffer::on_click_buffer()
     connect(m_buffer,           SIGNAL(set_occupiedSpace(int)), this, SLOT(setOccupiedSpace(int)));
 
 //    m_timerBuffer->setInterval(m_speed_data * 1000);
-    m_timerBuffer->setInterval(m_speed_data);
+    m_timerBuffer->setInterval(1000);
     m_timerBuffer->moveToThread(m_threadBuffer);
     m_buffer -> moveToThread(m_threadBuffer);
     m_threadBuffer -> start();
@@ -45,6 +45,9 @@ void ThreadBuffer::on_click_consumer()
 
 void ThreadBuffer::GreateConsumer()
 {
+    if (m_thread_id > 100)
+        return;
+
     m_threadConsumer = new QThread;
     m_timerConsumer = new QTimer;
     m_Consumer = new Consumer(m_size_query, m_max_value, ++m_thread_id);
@@ -64,8 +67,7 @@ void ThreadBuffer::GreateConsumer()
     connect(m_Consumer,  SIGNAL(equals(int, QString, int, QString)),
             this, SLOT(show_equals(int, QString, int, QString)));
 
-    //    m_timerConsumer->setInterval(m_speed_query * 60000);
-    m_timerConsumer->setInterval(m_speed_query * 600);
+    m_timerConsumer->setInterval(m_speed_query * 60000);
     m_timerConsumer->moveToThread(m_threadConsumer);
     m_Consumer-> moveToThread(m_threadConsumer);
     m_threadConsumer-> start();
@@ -89,6 +91,14 @@ void ThreadBuffer::setSizeBuffer(int _size)
     m_size_buffer = _size;
 }
 
+void ThreadBuffer::setSizeData(int _size)
+{
+    if (m_size_data == _size)
+        return;
+
+    m_size_data = _size;
+}
+
 void ThreadBuffer::setSizeQuery(int _size)
 {
     if (m_size_query == _size)
@@ -97,13 +107,6 @@ void ThreadBuffer::setSizeQuery(int _size)
     m_size_query = _size;
 }
 
-void ThreadBuffer::setSpeedData(int _speed)
-{
-    if (m_speed_data == _speed)
-        return;
-
-    m_speed_data = _speed;
-}
 
 void ThreadBuffer::setSpeedQuery(int _speed)
 {
@@ -128,7 +131,6 @@ void ThreadBuffer::setCountConsumer(int _count_consumer)
 
 void ThreadBuffer::setOccupiedSpace(int _occupiedSpace)
 {
-
     if (m_occupiedSpace == _occupiedSpace)
         return;
 
