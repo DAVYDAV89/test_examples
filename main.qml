@@ -72,7 +72,7 @@ ApplicationWindow {
             SpinBox {
                 id: spinBox_size_buffer
 //                from: 100000
-                from: 10
+                from: 50
                 to: 1000000000
                 stepSize: 100
                 editable: true
@@ -160,6 +160,26 @@ ApplicationWindow {
                 Layout.fillWidth:  true
             }
 
+
+            Label {
+                id: label_count_consumer
+                text: qsTr("Количество запросов: ")
+                Layout.row: 5
+                Layout.column: 0
+                font.pointSize: 15
+            }
+            SpinBox {
+                id: spinBox_count_consumer
+                from: 5
+                to: 100
+                stepSize: 1
+                editable: true
+
+                Layout.row: 5
+                Layout.column: 1
+                Layout.fillWidth:  true
+            }
+
             Button {
                 text: "Запустить"
                 Layout.fillWidth: true
@@ -188,6 +208,7 @@ ApplicationWindow {
                         appCore._size_query      = spinBox_size_query.value
                         appCore._max_value       = spinBox_max_data.value
                         appCore._speed_data      = spinBox_speed_data.value
+                        appCore._count_consumer  = spinBox_count_consumer.value
 
                         appCore.on_click_buffer()
                         add_query.enabled = true
@@ -250,6 +271,7 @@ ApplicationWindow {
                 Layout.row: 4
                 Layout.column: 3
                 Layout.rowSpan: 2
+                Layout.fillHeight:  true
 
                 font.pointSize: 15
                 background: Rectangle {

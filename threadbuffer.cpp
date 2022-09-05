@@ -12,6 +12,7 @@ ThreadBuffer::~ThreadBuffer()
     emit finished();
 }
 
+
 void ThreadBuffer::on_click_buffer()
 {
     m_threadBuffer = new QThread;
@@ -38,6 +39,12 @@ void ThreadBuffer::on_click_buffer()
 
 void ThreadBuffer::on_click_consumer()
 {
+    for (int i = 0; i < m_count_consumer; ++i)
+        GreateConsumer();
+}
+
+void ThreadBuffer::GreateConsumer()
+{
     m_threadConsumer = new QThread;
     m_timerConsumer = new QTimer;
     m_Consumer = new Consumer(m_size_query, m_max_value, ++m_thread_id);
@@ -57,7 +64,7 @@ void ThreadBuffer::on_click_consumer()
     connect(m_Consumer,  SIGNAL(equals(int, QString, int, QString)),
             this, SLOT(show_equals(int, QString, int, QString)));
 
-//    m_timerConsumer->setInterval(m_speed_query * 60000);
+    //    m_timerConsumer->setInterval(m_speed_query * 60000);
     m_timerConsumer->setInterval(m_speed_query * 600);
     m_timerConsumer->moveToThread(m_threadConsumer);
     m_Consumer-> moveToThread(m_threadConsumer);
@@ -112,6 +119,11 @@ void ThreadBuffer::setMaxValue(int _max_value)
         return;
 
     m_max_value = _max_value;
+}
+
+void ThreadBuffer::setCountConsumer(int _count_consumer)
+{
+    m_count_consumer = _count_consumer;
 }
 
 void ThreadBuffer::setOccupiedSpace(int _occupiedSpace)

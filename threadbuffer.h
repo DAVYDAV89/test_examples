@@ -17,7 +17,7 @@ class ThreadBuffer : public QObject
     Q_PROPERTY(int _speed_data /*READ _speed_data */WRITE setSpeedData)
     Q_PROPERTY(int _speed_query /*READ _speed_query*/ WRITE setSpeedQuery)
     Q_PROPERTY(int _max_value /*READ _max_value */WRITE setMaxValue)
-    Q_PROPERTY(int _max_value /*READ _max_value*/ WRITE setMaxValue)
+    Q_PROPERTY(int _count_consumer /*READ _max_value */WRITE setCountConsumer)
 public:
     explicit ThreadBuffer(QObject *parent = nullptr);
     ~ThreadBuffer();
@@ -58,6 +58,9 @@ private:
     int  m_max_value{10};
     int  m_occupiedSpace{0};
     int  m_thread_id{0};
+    int  m_count_consumer{0};
+
+    void GreateConsumer();
 
 public slots:
     void on_click_buffer();
@@ -70,6 +73,7 @@ public slots:
     void setSpeedData(int _speed);
     void setSpeedQuery(int _speed);
     void setMaxValue(int _max_value);
+    void setCountConsumer(int _count_consumer);
 
 private slots:
     void setOccupiedSpace(int _occupiedSpace );
