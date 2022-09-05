@@ -208,7 +208,7 @@ ApplicationWindow {
                         appCore._size_query      = spinBox_size_query.value
                         appCore._max_value       = spinBox_max_data.value
                         appCore._speed_data      = spinBox_speed_data.value
-                        appCore._count_consumer  = spinBox_count_consumer.value
+                        dataModel.clear()
 
                         appCore.on_click_buffer()
                         add_query.enabled = true
@@ -221,7 +221,6 @@ ApplicationWindow {
                         spinBox_size_query.enabled = true
                         spinBox_max_data.enabled = true
                         spinBox_speed_data.enabled = true
-                        dataModel.clear()
                         _row = 0
                         _occupiedSpace = 0
                         _begin_sequence =
@@ -282,6 +281,7 @@ ApplicationWindow {
                 }
                 onClicked: {
                     appCore._speed_query = spinBox_speed_query.value
+                    appCore._count_consumer  = spinBox_count_consumer.value
                     appCore.on_click_consumer()
                 }
             }
