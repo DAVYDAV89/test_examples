@@ -148,7 +148,7 @@ ApplicationWindow {
             }
             SpinBox {
                 id: spinBox_speed_query
-                from: 3
+                from: 5
                 to: 50
                 stepSize: 1
                 editable: true
@@ -170,6 +170,7 @@ ApplicationWindow {
                 id: spinBox_count_consumer
                 from: 1
                 to: 100
+                value: 50
                 stepSize: 1
                 editable: true
 

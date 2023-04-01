@@ -2,7 +2,6 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 
-#include "mymodeltable.h"
 #include "threadbuffer.h"
 
 int main(int argc, char *argv[])
@@ -15,7 +14,6 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
     ThreadBuffer appCore;
     QQmlContext *context = engine.rootContext();
-    qmlRegisterType<MyModelTable>("MulticastTableModel", 0, 1, "MulticastTableModel");
 
     context->setContextProperty("appCore", &appCore);
 
