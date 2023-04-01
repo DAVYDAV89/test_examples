@@ -25,11 +25,17 @@ Buffer::~Buffer()
 
 void Buffer::Generate()
 {
-//    qDebug() << __PRETTY_FUNCTION__ << m_count;
+//    qDebug() << __PRETTY_FUNCTION__;
 
     for (int i = 0; i < m_count; ++i) {
         Add((uint8_t)rand() % (m_max_value - m_min_value + 1) + m_min_value);
     }    
+
+//        qDebug() << "--------m_data-------------";
+//        for (int i = 0; i < m_size; ++i) {
+//            qDebug() << "el: " << m_data[i];
+//        }
+
 }
 
 void Buffer::Add(uint8_t val)
@@ -48,12 +54,10 @@ void Buffer::Add(uint8_t val)
 void Buffer::Get()
 {
     vector<uint8_t> res;
+    res.assign(m_data, m_data + m_size);
 
-    for (int i = 0; i < m_size; ++i) {
-        res.push_back(m_data[i]);
-    }
 
-//    qDebug() << "--------Buffer-------------";
+//    qDebug() << "--------Get-------------";
 //    for (const auto &el : res) {
 //        qDebug() << "el: " << el;
 //    }

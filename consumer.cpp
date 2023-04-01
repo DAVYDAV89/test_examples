@@ -7,10 +7,10 @@
 
 using namespace std;
 
-Consumer::Consumer(int count, int max_value, int id_thread)
-    : _count(count)
-    , _max_value(max_value)
-    , _id_thread(id_thread)
+Consumer::Consumer(int _count, int _max_value, int _id_thread)
+    : m_count(_count)
+    , m_max_value(_max_value)
+    , m_id_thread(_id_thread)
 {
 //    qDebug() << __PRETTY_FUNCTION__ << _id_thread;
 
@@ -19,31 +19,30 @@ Consumer::Consumer(int count, int max_value, int id_thread)
 
 Consumer::~Consumer()
 {
-    qDebug() << __PRETTY_FUNCTION__ << _id_thread;
+    qDebug() << __PRETTY_FUNCTION__ << m_id_thread;
 }
 
 void Consumer::Generate()
 {
-    _data.clear();
-    for (int i = 0; i < _count; ++i) {
-        Add((uint8_t)rand() % (_max_value - _min_value + 1) + _min_value);
+    m_data.clear();
+    for (int i = 0; i < m_count; ++i) {
+        Add((uint8_t)rand() % (m_max_value - m_min_value + 1) + m_min_value);
     }
     emit add();
 }
 
 void Consumer::Add(uint8_t el)
 {
-    _data.push_back(el);
+    m_data.push_back(el);
 }
 
 void Consumer::comparison(const vector<uint8_t> &_buffer)
 {
-    if (_data.size() == 0 || _buffer.size() == 0)
+    if (m_data.size() == 0 || _buffer.size() == 0)
         return;
 
-    qDebug() << "--------comparison--thread------" << _id_thread;
-
-//    for (const auto &el : _data) {
+//    qDebug() << "--------comparison--thread------" << m_id_thread;
+//    for (const auto &el : m_data) {
 //        qDebug() << "el_querty " << el;
 //    }
 
@@ -52,24 +51,20 @@ void Consumer::comparison(const vector<uint8_t> &_buffer)
 //    }
 
     auto _index{
-        std::search(std::begin(_buffer), std::end(_buffer), std::begin(_data), std::end(_data))
+        search(begin(_buffer), end(_buffer), begin(m_data), end(m_data))
     };
-    if ( _index != std::end(_buffer) ) {
-        auto it = find( _buffer.begin(), _buffer.end(), *_index);
+    if ( _index != end(_buffer) ) {
 
         QString _sequence;
-        for (const auto &el : _data) {
-            _sequence += QString::number(el);
+        for (const auto &el : m_data) {
+            _sequence += QString::number(el) + " ";
         }
-        _data.clear();
-
-//        qDebug() << "_sequence: " << _sequence << "thread: " << _id_thread;
-
-        QString _dateTime = QDateTime::currentDateTime().toString("dd.MM.yyyy/hh:mm:ss");
-
-        int _begin_sequence = it - _buffer.begin();
-
-        qDebug() << "---------sequence found----------" << it - _buffer.begin();
-        emit equals(_id_thread, _sequence, _begin_sequence, _dateTime);
+        m_data.clear();
+//        qDebug() << "---------sequence found----------" << distance(_buffer.begin(), _index ) << " thread: " << _id_thread;
+        emit equals(m_id_thread,
+                    _sequence,
+                    distance(_buffer.begin(), _index ),
+                    QDateTime::currentDateTime().toString("dd.MM.yyyy/hh:mm:ss")
+                    );
     }
 }

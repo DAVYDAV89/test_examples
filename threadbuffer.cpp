@@ -12,13 +12,12 @@ ThreadBuffer::~ThreadBuffer()
     emit finished();
 }
 
-
 void ThreadBuffer::on_click_buffer()
 {
     m_threadBuffer = new QThread;
     m_timerBuffer = new QTimer;
     m_buffer = new Buffer(m_size_buffer, m_size_data, m_max_value);
-//    m_buffer = new Buffer(500, 3, 3);
+//    m_buffer = new Buffer(10, 3, 3);
 
     connect(this, SIGNAL(finished()),  m_buffer,  SIGNAL(finished()));
 
@@ -31,7 +30,6 @@ void ThreadBuffer::on_click_buffer()
 
     connect(m_buffer,           SIGNAL(set_occupiedSpace(int)), this, SLOT(setOccupiedSpace(int)));
 
-//    m_timerBuffer->setInterval(m_speed_data * 1000);
     m_timerBuffer->setInterval(1000);
     m_timerBuffer->moveToThread(m_threadBuffer);
     m_buffer -> moveToThread(m_threadBuffer);
@@ -52,7 +50,7 @@ void ThreadBuffer::GreateConsumer()
     m_threadConsumer = new QThread;
     m_timerConsumer = new QTimer;
     m_Consumer = new Consumer(m_size_query, m_max_value, ++m_thread_id);
-//    m_Consumer = new Consumer(2, 3, ++m_thread_id);
+//    m_Consumer = new Consumer(3, 3, ++m_thread_id);
 
     connect(this, SIGNAL(finished()),  m_Consumer,  SIGNAL(finished()));
 
