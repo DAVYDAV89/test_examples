@@ -1,8 +1,8 @@
-﻿import QtQuick 2.13
+﻿import QtQuick 2.15
+import QtQuick.Controls 1.4
 import QtQuick.Controls 2.13
 import QtQuick.Layouts 1.2
 import QtQuick.Controls.Styles 1.4
-
 
 
 ApplicationWindow {
@@ -23,17 +23,19 @@ ApplicationWindow {
 
         onOccupiedSpaceChanged:{
             _occupiedSpace = m_occupiedSpace
-//            console.log("_occupiedSpace:", _occupiedSpace );
+            //            console.log("_occupiedSpace:", _occupiedSpace );
         }
         onShowEquals:{
             _begin_index_sequence = _begin_sequence
             _size_sequence = spinBox_size_query.value
-            dataModel.insert(_row++, {id: _id_thread, sequence: _sequence, begin_sequence: _begin_sequence, dataTime: _dateTime})
+//            myModel.insertRows(_row++, {id: _id_thread, sequence: _sequence, begin_sequence: _begin_sequence, dataTime: _dateTime})
 
-//            console.log("thread:", _id_thread );
-//            console.log("_sequence:", _sequence );
-//            console.log("_begin_sequence:", _begin_sequence );
-//            console.log("_dateTime:", _dateTime );
+            myModel.sequence = _sequence
+
+                        console.log("thread:", _id_thread );
+                        console.log("_sequence:", _sequence );
+                        console.log("_begin_sequence:", _begin_sequence );
+                        console.log("_dateTime:", _dateTime );
         }
     }
 
@@ -170,6 +172,7 @@ ApplicationWindow {
                 id: spinBox_count_consumer
                 from: 1
                 to: 100
+                value: 50
                 stepSize: 1
                 editable: true
 
@@ -206,7 +209,7 @@ ApplicationWindow {
                         appCore._size_data       = spinBox_size_data.value
                         appCore._size_query      = spinBox_size_query.value
                         appCore._max_value       = spinBox_max_data.value
-                        dataModel.clear()
+//                        myModel.clear()
 
                         appCore.on_click_buffer()
                         add_query.enabled = true
@@ -287,7 +290,7 @@ ApplicationWindow {
                     appCore._count_consumer  = spinBox_count_consumer.value
                     appCore.on_click_consumer()
 
-//                    console.log("_count_thread:", appCore._count_thread);
+                    //                    console.log("_count_thread:", appCore._count_thread);
 
                     if (appCore._count_thread === 100 ) {
                         this.enabled = false
@@ -315,13 +318,33 @@ ApplicationWindow {
                 Layout.fillWidth: true
                 Layout.fillHeight:  true
 
-                ListModel {
-                    id: dataModel
-                }
-                Term{
-                    id: termDisplay
-//                    onClicked: {
-//                    }
+                TableView {
+                    anchors.margins: 10
+                    anchors.fill: parent
+                    clip: true
+
+                    model: myModel
+
+                    TableViewColumn {
+                        role: "id"
+                        title: myModel.headerData(0, Qt.Horizontal);
+                        width: 100
+                    }
+                    TableViewColumn {
+                        role: "sequence"
+                        title: myModel.headerData(1, Qt.Horizontal);
+                        width: 250
+                    }
+                    TableViewColumn {
+                        role: "begin_sequence"
+                        title: myModel.headerData(2, Qt.Horizontal);
+                        width: 150
+                    }
+                    TableViewColumn {
+                        role: "dataTime"
+                        title: myModel.headerData(3, Qt.Horizontal);
+                        width: 250
+                    }
                 }
             }
             Chart{

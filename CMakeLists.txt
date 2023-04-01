@@ -19,7 +19,8 @@ set(PROJECT_SOURCES
         main.cpp
         buffer.h buffer.cpp
         threadbuffer.h threadbuffer.cpp
-        consumer.h consumer.cpp        
+        consumer.h consumer.cpp
+        mymodeltable.h
         qml.qrc
 )
 

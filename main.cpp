@@ -15,10 +15,11 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
     ThreadBuffer appCore;
     QQmlContext *context = engine.rootContext();
-    qmlRegisterType<MyModelTable>("MulticastTableModel", 0, 1, "MulticastTableModel");
+    MyModelTable *model = new MyModelTable;
 
     context->setContextProperty("appCore", &appCore);
 
+    engine.rootContext()->setContextProperty("myModel", model);
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
     if (engine.rootObjects().isEmpty())
         return -1;
