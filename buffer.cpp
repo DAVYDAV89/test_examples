@@ -3,16 +3,16 @@
 #include <QDebug>
 
 using namespace std;
-Buffer::Buffer(int size, int count, uint8_t max_value)
-    : _size(size)
-    , _count(count)
-    , _max_value(max_value)
+Buffer::Buffer(int _size, int _count, uint8_t _max_value)
+    : m_size(_size)
+    , m_count(_count)
+    , m_max_value(_max_value)
 {
-    _data = new uint8_t[_size];
-    for (int i = 0; i < _size; ++i)
-        _data[i] = 0;
+    m_data = new uint8_t[m_size];
+    for (int i = 0; i < m_size; ++i)
+        m_data[i] = 0;
 
-    _occupiedSpace = _size;
+    m_occupiedSpace = m_size;
 
     srand(time(NULL));
 }
@@ -20,15 +20,15 @@ Buffer::Buffer(int size, int count, uint8_t max_value)
 Buffer::~Buffer()
 {
     qDebug() << __PRETTY_FUNCTION__;
-    delete[] _data;
+    delete[] m_data;
 }
 
 void Buffer::Generate()
 {
-//    qDebug() << __PRETTY_FUNCTION__;
+//    qDebug() << __PRETTY_FUNCTION__ << m_count;
 
-    for (int i = 0; i < _count; ++i) {
-        Add((uint8_t)rand() % (_max_value - _min_value + 1) + _min_value);
+    for (int i = 0; i < m_count; ++i) {
+        Add((uint8_t)rand() % (m_max_value - m_min_value + 1) + m_min_value);
     }    
 }
 
@@ -36,12 +36,12 @@ void Buffer::Add(uint8_t val)
 {
 //    qDebug() << "val: " << val;
 
-    if (_occupiedSpace == _size)
-        _occupiedSpace = 0;
+    if (m_occupiedSpace == m_size)
+        m_occupiedSpace = 0;
 
-    _data[_occupiedSpace++ % _size] = val;
+    m_data[m_occupiedSpace++ % m_size] = val;
 
-    emit set_occupiedSpace(_occupiedSpace);
+    emit set_occupiedSpace(m_occupiedSpace);
 }
 
 
@@ -49,8 +49,8 @@ void Buffer::Get()
 {
     vector<uint8_t> res;
 
-    for (int i = 0; i < _size; ++i) {
-        res.push_back(_data[i]);
+    for (int i = 0; i < m_size; ++i) {
+        res.push_back(m_data[i]);
     }
 
 //    qDebug() << "--------Buffer-------------";

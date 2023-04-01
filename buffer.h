@@ -8,16 +8,16 @@ class Buffer : public QObject
 {
     Q_OBJECT
 public:
-    Buffer(int size = 1024, int count = 512, uint8_t max_value = 10);
+    Buffer(int, int, uint8_t);
     ~Buffer();
 
 private:
-    uint8_t*    _data;          // Хранимые данные.
-    int         _size;          // Размер циклического буффера.
-    int         _count;         // Размер последовательности
-    int         _occupiedSpace; // Занятое мето.
-    int         _max_value;     // Макс генерируемое значение
-    const int _min_value{0};
+    uint8_t*    m_data;          // Хранимые данные.
+    int         m_size;          // Размер циклического буффера.
+    int         m_count;         // Размер последовательности
+    int         m_occupiedSpace; // Занятое мето.
+    int         m_max_value;     // Макс генерируемое значение
+    const int   m_min_value{0};
 
 
 private slots:

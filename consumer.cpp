@@ -41,7 +41,7 @@ void Consumer::comparison(const vector<uint8_t> &_buffer)
     if (_data.size() == 0 || _buffer.size() == 0)
         return;
 
-//    qDebug() << "--------comparison--thread------" << _id_thread;
+    qDebug() << "--------comparison--thread------" << _id_thread;
 
 //    for (const auto &el : _data) {
 //        qDebug() << "el_querty " << el;
@@ -63,13 +63,13 @@ void Consumer::comparison(const vector<uint8_t> &_buffer)
         }
         _data.clear();
 
-        qDebug() << "_sequence: " << _sequence << "thread: " << _id_thread;
+//        qDebug() << "_sequence: " << _sequence << "thread: " << _id_thread;
 
         QString _dateTime = QDateTime::currentDateTime().toString("dd.MM.yyyy/hh:mm:ss");
 
         int _begin_sequence = it - _buffer.begin();
 
-//        qDebug() << "---------sequence found----------" << it - _buffer.begin();
+        qDebug() << "---------sequence found----------" << it - _buffer.begin();
         emit equals(_id_thread, _sequence, _begin_sequence, _dateTime);
     }
 }

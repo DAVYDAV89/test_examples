@@ -18,6 +18,7 @@ void ThreadBuffer::on_click_buffer()
     m_threadBuffer = new QThread;
     m_timerBuffer = new QTimer;
     m_buffer = new Buffer(m_size_buffer, m_size_data, m_max_value);
+//    m_buffer = new Buffer(500, 3, 3);
 
     connect(this, SIGNAL(finished()),  m_buffer,  SIGNAL(finished()));
 
@@ -51,6 +52,7 @@ void ThreadBuffer::GreateConsumer()
     m_threadConsumer = new QThread;
     m_timerConsumer = new QTimer;
     m_Consumer = new Consumer(m_size_query, m_max_value, ++m_thread_id);
+//    m_Consumer = new Consumer(2, 3, ++m_thread_id);
 
     connect(this, SIGNAL(finished()),  m_Consumer,  SIGNAL(finished()));
 
@@ -67,7 +69,7 @@ void ThreadBuffer::GreateConsumer()
     connect(m_Consumer,  SIGNAL(equals(int, QString, int, QString)),
             this, SLOT(show_equals(int, QString, int, QString)));
 
-    m_timerConsumer->setInterval(m_speed_query * 60000);
+    m_timerConsumer->setInterval(m_speed_query * 1000);
     m_timerConsumer->moveToThread(m_threadConsumer);
     m_Consumer-> moveToThread(m_threadConsumer);
     m_threadConsumer-> start();
@@ -85,6 +87,7 @@ void ThreadBuffer::on_click_buffer_stop()
 
 void ThreadBuffer::setSizeBuffer(int _size)
 {
+//    qDebug() << __PRETTY_FUNCTION__ << _size;
     if (m_size_buffer == _size)
         return;
 
@@ -93,6 +96,7 @@ void ThreadBuffer::setSizeBuffer(int _size)
 
 void ThreadBuffer::setSizeData(int _size)
 {
+//    qDebug() << __PRETTY_FUNCTION__ << _size;
     if (m_size_data == _size)
         return;
 
@@ -101,6 +105,7 @@ void ThreadBuffer::setSizeData(int _size)
 
 void ThreadBuffer::setSizeQuery(int _size)
 {
+//    qDebug() << __PRETTY_FUNCTION__ << _size;
     if (m_size_query == _size)
         return;
 

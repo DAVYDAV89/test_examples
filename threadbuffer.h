@@ -12,36 +12,17 @@
 class ThreadBuffer : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(int _size_buffer /*READ _size_buffer*/ WRITE setSizeBuffer)
-    Q_PROPERTY(int _size_data /*READ _speed_data */WRITE setSizeData)
-    Q_PROPERTY(int _size_query /*READ _size_query*/ WRITE setSizeQuery)
-    Q_PROPERTY(int _speed_query /*READ _speed_query*/ WRITE setSpeedQuery)
-    Q_PROPERTY(int _max_value /*READ _max_value */WRITE setMaxValue)
+    Q_PROPERTY(int _size_buffer WRITE setSizeBuffer)
+    Q_PROPERTY(int _size_data WRITE setSizeData)
+    Q_PROPERTY(int _size_query WRITE setSizeQuery)
+    Q_PROPERTY(int _speed_query WRITE setSpeedQuery)
+    Q_PROPERTY(int _max_value WRITE setMaxValue)
     Q_PROPERTY(int _count_consumer READ get_count_consumer WRITE setCountConsumer)
     Q_PROPERTY(int _count_thread READ get_count_thread )
 public:
     explicit ThreadBuffer(QObject *parent = nullptr);
     ~ThreadBuffer();
 
-//    int  _size_buffer() {
-//        return m_size_buffer;
-//    }
-
-//    int _size_query() {
-//        return m_size_query;
-//    }
-
-//    int _speed_data() {
-//        return m_speed_data;
-//    }
-
-//    int _speed_query() {
-//        return m_speed_query;
-//    }
-
-//    int _max_value() {
-//        return m_max_value;
-//    }
     int get_count_consumer() {
         return m_count_consumer;
     }

@@ -72,8 +72,8 @@ ApplicationWindow {
             }
             SpinBox {
                 id: spinBox_size_buffer
-                from: 100000
-                to: 1000000000
+                from:   500
+                to:     500000
                 stepSize: 100
                 editable: true
 
@@ -91,8 +91,8 @@ ApplicationWindow {
             }
             SpinBox {
                 id: spinBox_size_data
-                from: 10000
-                to: 100000000
+                from: 5
+                to: 20
                 stepSize: 1
                 editable: true
 
@@ -110,8 +110,8 @@ ApplicationWindow {
             }
             SpinBox {
                 id: spinBox_size_query
-                from: 10
-                to: 1000
+                from: 5
+                to: 20
                 stepSize: 1
                 editable: true
 
@@ -129,8 +129,8 @@ ApplicationWindow {
             }
             SpinBox {
                 id: spinBox_max_data
-                from: 10
-                to: 100
+                from: 5
+                to: 50
                 stepSize: 1
                 editable: true
 
@@ -141,15 +141,15 @@ ApplicationWindow {
 
             Label {
                 id: label_speed_query
-                text: qsTr("Скорость генерации запросов, мин: ")
+                text: qsTr("Скорость генерации запросов, сек: ")
                 Layout.row: 4
                 Layout.column: 0
                 font.pointSize: 15
             }
             SpinBox {
                 id: spinBox_speed_query
-                from: 1
-                to: 100
+                from: 3
+                to: 50
                 stepSize: 1
                 editable: true
 
@@ -203,7 +203,7 @@ ApplicationWindow {
                         spinBox_max_data.enabled = false
 
                         appCore._size_buffer     = spinBox_size_buffer.value
-                        appCore._speed_data      = spinBox_size_data.value
+                        appCore._size_data       = spinBox_size_data.value
                         appCore._size_query      = spinBox_size_query.value
                         appCore._max_value       = spinBox_max_data.value
                         dataModel.clear()
